@@ -11,12 +11,8 @@ class CalculatorPage extends StatefulWidget {
 }
 
 class _CalculatorPageState extends State<CalculatorPage> {
-  
- 
   @override
   Widget build(BuildContext context) {
-     CalculatorProvider calculate =
-      Provider.of<CalculatorProvider>(context);
     return Consumer<CalculatorProvider>(builder: (context, value, child) {
       return Scaffold(
         backgroundColor: Colors.deepPurple[100],
@@ -34,7 +30,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                       padding: const EdgeInsets.all(20),
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        calculate.userQuestion,
+                        value.userQuestion,
                         style: const TextStyle(fontSize: 20),
                       ),
                     ),
@@ -42,7 +38,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                         padding: const EdgeInsets.all(20),
                         alignment: Alignment.centerRight,
                         child: Text(
-                          calculate.userAnswer,
+                          value.userAnswer,
                           style: const TextStyle(fontSize: 20),
                         )),
                   ],
@@ -53,44 +49,44 @@ class _CalculatorPageState extends State<CalculatorPage> {
               flex: 2,
               child: Container(
                 child: GridView.builder(
-                  itemCount: calculate.buttons.length,
+                  itemCount: value.buttons.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 4,
                   ),
                   itemBuilder: (BuildContext context, int index) {
-                    if (index == 0) {
-                      return MyButton(
-                        buttonTapped: () => calculate.eraseAll(),
-                        color: Colors.green,
-                        textColor: Colors.white,
-                        buttonText: calculate.buttons[index],
-                      );
-                    } else if (index == 1) {
-                      return MyButton(
-                        buttonTapped: () => calculate.deleteButton(),
-                        color: Colors.red,
-                        textColor: Colors.white,
-                        buttonText: calculate.buttons[index],
-                      );
-                    } else if (index == calculate.buttons.length - 1) {
-                      return MyButton(
-                        buttonTapped: () => calculate.showAnswer(),
-                        color: Colors.deepPurple,
-                        textColor: Colors.white,
-                        buttonText: calculate.buttons[index],
-                      );
-                    } else {
-                      return MyButton(
-                        buttonTapped: () => calculate.buttonPushed(index),
-                        color: calculate.isOperator(calculate.buttons[index])
-                            ? Colors.deepPurple
-                            : Colors.deepPurple[50],
-                        textColor:
-                            calculate.isOperator(calculate.buttons[index])
-                                ? Colors.white
-                                : Colors.deepPurple,
-                        buttonText: calculate.buttons[index],
-                      );
+                    switch (index) {
+                      case 0:
+                        return CalculatorButton(
+                          buttonTapped: () => value.eraseAll(),
+                          color: Colors.green,
+                          textColor: Colors.white,
+                          buttonText: value.buttons[index],
+                        );
+                      case 1:
+                        return CalculatorButton(
+                          buttonTapped: () => value.deleteButton(),
+                          color: Colors.red,
+                          textColor: Colors.white,
+                          buttonText: value.buttons[index],
+                        );
+                      case var lastIndex when index == value.buttons.length - 1:
+                        return CalculatorButton(
+                          buttonTapped: () => value.showAnswer(),
+                          color: Colors.deepPurple,
+                          textColor: Colors.white,
+                          buttonText: value.buttons[index],
+                        );
+                      default:
+                        return CalculatorButton(
+                          buttonTapped: () => value.buttonPushed(index),
+                          color: value.isOperator(value.buttons[index])
+                              ? Colors.deepPurple
+                              : Colors.deepPurple[50],
+                          textColor: value.isOperator(value.buttons[index])
+                              ? Colors.white
+                              : Colors.deepPurple,
+                          buttonText: value.buttons[index],
+                        );
                     }
                   },
                 ),
