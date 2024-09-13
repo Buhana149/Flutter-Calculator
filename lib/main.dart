@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calculator/calculator_page.dart';
+import 'package:flutter_calculator/providers/calculator_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) =>CalculatorProvider(),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
